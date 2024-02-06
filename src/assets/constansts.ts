@@ -5,7 +5,7 @@ export const profilePic =
 
 export const navigationURLs = [
   {
-    displayName: "Home",
+    displayName: " ",
     url: "/",
     type: "",
   },

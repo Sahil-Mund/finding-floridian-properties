@@ -1,20 +1,24 @@
 import { ImgUploadIcon } from "assets/svg";
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 interface ImageUploadProps {
   // Add your component's props here
   setFormData: (src: any) => void;
   setBannerImgUrl: (src: any) => void;
-  type: string;
+  setSelectedCoverImage: (src: any) => void;
+  selectedCoverImage : string;
+  type: any;
 }
 
 const ImageUpload: React.FC<ImageUploadProps> = ({
   setFormData,
   type,
   setBannerImgUrl,
+  setSelectedCoverImage,
+  selectedCoverImage
+
 }) => {
   const fileInputRef = useRef(null);
-  const [selectedImage, setSelectedImage] = useState<string | null>(null);
 
   //   const handleSvgClick = () => {
   //     if(fileInputRef?.current){
@@ -23,23 +27,8 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
   //     }
   //   };
 
-  const uploadToAWS = async (file: any) => {
-    const formData = new FormData();
-    formData.append("image", file);
 
-    // Replace 'your-api-endpoint' with the actual endpoint where you handle the upload
-    const response = await fetch(
-      "https://stagingappapi.ghc.health/api/progress/upload",
-      {
-        method: "POST",
-        body: formData, // Send the file in a FormData object
-      }
-    );
 
-    const data = await response.json();
-    // Assuming the server responds with the URL of the uploaded image in AWS S3
-    return data;
-  };
   const handleChange = async (event: any) => {
     // handle file change
     // console.log(event.target?.files && event.target?.files[0]);
@@ -49,7 +38,7 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
       const reader = new FileReader();
       reader.onloadend = () => {
         // Set the selected image to the data URL
-        setSelectedImage(reader.result as string);
+        setSelectedCoverImage(reader.result as string);
         if (type === "banner") {
           setFormData((prev: any) => {
             return { ...prev, banner_img: reader.result };
@@ -89,9 +78,9 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
     <div className="image-upload-container">
       <div className="upload">
         <label htmlFor="imageUpload">
-          {selectedImage ? (
+          {selectedCoverImage ? (
             <img
-              src={selectedImage}
+              src={selectedCoverImage}
               alt="Selected"
               className="selected-banner-img"
               style={{ maxWidth: "100%", maxHeight: "100%" }}

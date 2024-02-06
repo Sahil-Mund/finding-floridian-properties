@@ -11,10 +11,10 @@ export const useAuthProvider = () => {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [token, setToken] = useState('');
 
-    useEffect(() => {
-        const authToken = JSON.parse(sessionStorage.getItem('user_access_token') as string);
-        setToken(authToken);
-    }, []);
+    // useEffect(() => {
+    //     // const authToken = JSON.parse(sessionStorage.getItem('user_access_token') as string);
+    //     // setToken(authToken);
+    // }, []);
 
     const updateToken = (newToken: string) => {
         setToken(newToken);

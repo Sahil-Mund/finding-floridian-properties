@@ -33,9 +33,15 @@ const LogIn: React.FC<LogInProps> = (props) => {
     try {
       const data = await user_login(formData);
 
-      console.log("Form submitted:", data);
+      // console.log("Form new:", data.response.data);
+
+      if(data?.response?.data && data?.response?.data?.STATUS === "FAILURE"){        
+        toast.error(data.response.data.MESSAGE as string);
+        return;
+      }
+
       if (data.STATUS && data.STATUS === "SUCCESS") {
-        toast.success("LoggedIn successfully!!");
+        toast.success("Login successful!!");
         handleUserAccess(data);
         resetForm();
         return;
@@ -49,6 +55,7 @@ const LogIn: React.FC<LogInProps> = (props) => {
       }
     } catch (error) {
       console.error(error);
+      
     }
   };
 

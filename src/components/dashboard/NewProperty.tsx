@@ -236,6 +236,9 @@ const NewProperty: React.FC<NewPropertyProps> = (props) => {
   const galleryImageRef = useRef(null);
   const videoRef = useRef(null);
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
+  const [selectedCoverImage, setSelectedCoverImage] = useState<string | null>(
+    null
+  );
 
   const [validationError, setValidationError] = useState<string>("");
   const formRef = useRef(null);
@@ -245,6 +248,8 @@ const NewProperty: React.FC<NewPropertyProps> = (props) => {
     setGalleryImgFiles([]); // Reset gallery image files
     setGalleryPreview([]); // Reset gallery image previews
     setHomeTour(null); // Reset home tour video
+    setSelectedImage(null);
+    setSelectedCoverImage(null); //reset cover image
     setDots({
       proximity_to_lake: { row: 0, col: 0 },
       walkability: { row: 0, col: 0 },
@@ -396,10 +401,12 @@ const NewProperty: React.FC<NewPropertyProps> = (props) => {
         gallery_images_urls,
         home_tour_video: home_tour_video?.data.data || "",
       });
-      // resetForm();
-      console.log(response);
+      resetForm();
+      // console.log(response);
 
-      toast.success("Property details added successfully");
+      if (response.STATUS === "SUCCESS") {
+        toast.success(response.MESSAGE || "Product Added Successfully");
+      }
     } catch (error: any) {
       console.log(error);
       toast.error(error.response.data.message);
@@ -575,6 +582,8 @@ const NewProperty: React.FC<NewPropertyProps> = (props) => {
                 setFormData={setFormData}
                 type={"banner"}
                 setBannerImgUrl={setBannerImgUrl}
+                selectedCoverImage={selectedCoverImage as string}
+                setSelectedCoverImage={setSelectedCoverImage}
               />
               <br />
               {/* <input type="submit" value="Upload Cover Photo" /> */}
@@ -1025,6 +1034,7 @@ const NewProperty: React.FC<NewPropertyProps> = (props) => {
                 type="checkbox"
                 name="acknowledgement"
                 onChange={handleChange}
+                checked={formData.acknowledgement}
               />{" "}
               <p>
                 I acknowledge and agree to the terms and conditions of listing
