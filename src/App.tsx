@@ -39,7 +39,7 @@ function App() {
   useEffect(() => {
     async function fetchUser() {
       const data = await get_loggedIn_user();
-      setUserData(data.DATA.user);
+      setUserData(data.DATA?.user );
       setIsLoggedIn(data.DATA.user ? true : false);
       
     }

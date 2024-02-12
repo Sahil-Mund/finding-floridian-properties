@@ -1,3 +1,4 @@
+import { get_loggedIn_user } from "backend";
 import { AuthContext } from "providers/AuthProvider";
 import { useContext, useEffect, useState } from "react";
 
@@ -11,10 +12,16 @@ export const useAuthProvider = () => {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [token, setToken] = useState('');
 
-    // useEffect(() => {
-    //     // const authToken = JSON.parse(sessionStorage.getItem('user_access_token') as string);
-    //     // setToken(authToken);
-    // }, []);
+    useEffect(() => {
+        const authToken = JSON.parse(sessionStorage.getItem('user_access_token') as string);
+        setToken(authToken);
+
+        if (authToken) {
+            setIsLoggedIn(true);
+        }
+
+
+    }, []);
 
     const updateToken = (newToken: string) => {
         setToken(newToken);
