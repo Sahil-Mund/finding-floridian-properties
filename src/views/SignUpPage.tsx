@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { ThankYou } from "../components";
 import "../styles/signin-register.scss";
 import { useForm } from "../hooks/useForm";
@@ -19,6 +19,8 @@ const SignUp: React.FC = () => {
     phone_number: "",
     passwordConfirmation: "",
   });
+
+  const navigate = useNavigate();
 
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -51,6 +53,15 @@ const SignUp: React.FC = () => {
       console.error(error);
     }
   };
+
+  useEffect(() => {
+    const authToken = JSON.parse(
+      sessionStorage.getItem("user_access_token") as string
+    );
+    if (authToken) {
+      navigate("/");
+    }
+  }, [navigate]);
 
   return (
     <section className="user-registration">

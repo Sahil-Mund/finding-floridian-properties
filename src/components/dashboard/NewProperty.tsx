@@ -530,13 +530,13 @@ const NewProperty: React.FC<NewPropertyProps> = (props) => {
           <button>+ Sell a property</button>
         </div>
       </div> */}
-      <Link className="backbutton" to="/" style={{ textDecoration: "none" }}>
+      <span className="backbutton" style={{ textDecoration: "none", visibility:'hidden' }}>
         <img
           src="https://s3.ap-south-1.amazonaws.com/cdn.ghc.health/2f72bef8-773f-4c15-8692-6e46798ffea3.png"
           alt="back_icon"
         />
         <p>Back</p>
-      </Link>
+      </span>
 
       <div className="main-div">
         <div className="rentSell">
@@ -709,7 +709,7 @@ const NewProperty: React.FC<NewPropertyProps> = (props) => {
           </div>
 
           <div className="check-box">
-            <label>Type of Rental</label>
+            <label>Type of {serviceType === 'rent' ? 'Rental' : 'Sell'}</label>
             <div className="check-option">
               {(serviceType === "rent"
                 ? rental_property_type

@@ -1,5 +1,5 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
 
 import "../styles/signin-register.scss";
 import { useForm } from "../hooks/useForm";
@@ -18,6 +18,7 @@ const LogIn: React.FC<LogInProps> = (props) => {
   });
 
   const { setUserData, setIsLoggedIn } = useAuth();
+  const navigate = useNavigate();
 
   const handleUserAccess = (resp: any) => {
     const { token, user } = resp.DATA;
@@ -35,7 +36,7 @@ const LogIn: React.FC<LogInProps> = (props) => {
 
       // console.log("Form new:", data.response.data);
 
-      if(data?.response?.data && data?.response?.data?.STATUS === "FAILURE"){        
+      if (data?.response?.data && data?.response?.data?.STATUS === "FAILURE") {
         toast.error(data.response.data.MESSAGE as string);
         return;
       }
@@ -43,6 +44,7 @@ const LogIn: React.FC<LogInProps> = (props) => {
       if (data.STATUS && data.STATUS === "SUCCESS") {
         toast.success("Login successful!!");
         handleUserAccess(data);
+        navigate("/");
         resetForm();
         return;
       }
@@ -55,9 +57,17 @@ const LogIn: React.FC<LogInProps> = (props) => {
       }
     } catch (error) {
       console.error(error);
-      
     }
   };
+
+  useEffect(() => {
+    const authToken = JSON.parse(
+      sessionStorage.getItem("user_access_token") as string
+    );
+    if (authToken) {
+      navigate("/");
+    }
+  }, [navigate]);
 
   return (
     <section className="user-login">

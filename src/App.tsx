@@ -31,6 +31,7 @@ import LogInPage from "views/UserLogIn";
 import LogIn from "views/LogInPage";
 import SignUp from "views/SignUpPage";
 import { useAuth } from "hooks/useAuth";
+import ProtectedRoute from "views/ProtectedRoute";
 
 function App() {
   const { isLoggedIn, setIsLoggedIn, setUserData } = useAuth();
@@ -40,6 +41,7 @@ function App() {
       const data = await get_loggedIn_user();
       setUserData(data.DATA.user);
       setIsLoggedIn(data.DATA.user ? true : false);
+      
     }
 
     fetchUser();
@@ -65,14 +67,29 @@ function App() {
         {/* <UserLogIn /> */}
         <Routes>
           <Route
-            path="/"
-            element={isLoggedIn ? <AddPropertyPage /> : <LogIn />}
+            path="/login"
+            element={<LogIn />}
           />
           <Route path="/register" element={<SignUp />} />
-          {/* <Route path="/new" element={<AddPropertyPage />} /> */}
+          <Route
+            path="/"
+            element={
+              <ProtectedRoute>
+                <AddPropertyPage />
+              </ProtectedRoute>
+            }
+          />
+
+          {/* {isLoggedIn ? (
+            <Route path="/" element={<AddPropertyPage />} />
+          ) : (
+            <>
+              <Route path="/register" element={<SignUp />} />
+              <Route path="/login" element={<LogIn />} />
+            </>
+          )} */}
 
           {/* Not found route */}
-         
         </Routes>
         {/* <Footer /> */}
       </BrowserRouter>
