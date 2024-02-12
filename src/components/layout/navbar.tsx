@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { NavLink, useLocation, Link } from "react-router-dom";
+import { NavLink, useLocation, Link, useNavigate } from "react-router-dom";
 
 import { navigationURLs, logoURL } from "../../assets/constansts";
 
@@ -11,6 +11,7 @@ const Navbar = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState<boolean>(false);
   const [isMobile, setIsMobile] = useState(false);
   const { pathname, search } = useLocation();
+  const navigate = useNavigate();
 
   const handleMobileMenuToggle = () => {
     setMobileMenuOpen(!mobileMenuOpen);
@@ -48,7 +49,8 @@ const Navbar = () => {
     
     setIsLoggedIn(false);
     setUserData(null);
-    sessionStorage.removeItem('user_access_token')
+    sessionStorage.removeItem('user_access_token');
+    navigate('/login')
   }
 
   return (
