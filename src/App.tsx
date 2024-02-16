@@ -32,6 +32,7 @@ import LogIn from "views/LogInPage";
 import SignUp from "views/SignUpPage";
 import { useAuth } from "hooks/useAuth";
 import ProtectedRoute from "views/ProtectedRoute";
+import UserListingTermsAndConditions from "views/UserListingTermsAndConditions";
 
 function App() {
   const { isLoggedIn, setIsLoggedIn, setUserData, token } = useAuth();
@@ -76,6 +77,10 @@ function App() {
                 <AddPropertyPage />
               </ProtectedRoute>
             }
+          />
+          <Route
+            path="/user-listing-tnc"
+            element={<UserListingTermsAndConditions />}
           />
 
           {/* {isLoggedIn ? (

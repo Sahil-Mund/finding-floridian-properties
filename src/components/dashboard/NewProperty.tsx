@@ -1049,8 +1049,12 @@ const NewProperty: React.FC<NewPropertyProps> = (props) => {
                 checked={formData.acknowledgement}
               />{" "}
               <p>
-                I acknowledge and agree to the terms and conditions of listing
-                this property.
+                I acknowledge and agree to the{" "}
+                <Link to={"/user-listing-tnc"} target="_blank">
+                  {" "}
+                  terms and conditions{" "}
+                </Link>{" "}
+                of listing this property.
               </p>
             </label>
           </div>
