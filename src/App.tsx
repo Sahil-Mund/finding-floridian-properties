@@ -34,17 +34,18 @@ import { useAuth } from "hooks/useAuth";
 import ProtectedRoute from "views/ProtectedRoute";
 
 function App() {
-  const { isLoggedIn, setIsLoggedIn, setUserData } = useAuth();
+  const { isLoggedIn, setIsLoggedIn, setUserData, token } = useAuth();
 
   useEffect(() => {
     async function fetchUser() {
       const data = await get_loggedIn_user();
-      setUserData(data.DATA?.user );
+      setUserData(data.DATA?.user);
       setIsLoggedIn(data.DATA.user ? true : false);
-      
     }
 
-    fetchUser();
+    if (token) {
+      fetchUser();
+    }
   }, []);
   return (
     <div className="App">
@@ -66,10 +67,7 @@ function App() {
         {/* <ChatBotButton /> */}
         {/* <UserLogIn /> */}
         <Routes>
-          <Route
-            path="/login"
-            element={<LogIn />}
-          />
+          <Route path="/login" element={<LogIn />} />
           <Route path="/register" element={<SignUp />} />
           <Route
             path="/"

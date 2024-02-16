@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
 import "../styles/signin-register.scss";
@@ -6,6 +6,7 @@ import { useForm } from "../hooks/useForm";
 import { user_login } from "backend";
 import { toast } from "react-toastify";
 import { useAuth } from "hooks/useAuth";
+import { ColorRing, Oval } from "react-loader-spinner";
 
 interface LogInProps {
   // Add your component's props here
@@ -18,6 +19,8 @@ const LogIn: React.FC<LogInProps> = (props) => {
   });
 
   const { setUserData, setIsLoggedIn } = useAuth();
+  const [isLoading, setIsLoading] = useState(false);
+
   const navigate = useNavigate();
 
   const handleUserAccess = (resp: any) => {
@@ -32,6 +35,8 @@ const LogIn: React.FC<LogInProps> = (props) => {
 
     //TODO: Add your form submission logic here
     try {
+      setIsLoading(true);
+
       const data = await user_login(formData);
 
       // console.log("Form new:", data.response.data);
@@ -41,14 +46,17 @@ const LogIn: React.FC<LogInProps> = (props) => {
         return;
       }
 
+      
       if (data.STATUS && data.STATUS === "SUCCESS") {
         toast.success("Login successful!!");
         handleUserAccess(data);
         navigate("/");
         resetForm();
+        setIsLoading(false);
         return;
       }
 
+      setIsLoading(false);
       const errorObj = data.response.data.DATA;
       if (Array.isArray(errorObj)) {
         toast.error(errorObj[0].message);
@@ -68,6 +76,8 @@ const LogIn: React.FC<LogInProps> = (props) => {
       navigate("/");
     }
   }, [navigate]);
+
+
 
   return (
     <section className="user-login">
@@ -98,7 +108,22 @@ const LogIn: React.FC<LogInProps> = (props) => {
 
             <div className="btns">
               <button className="btn-primary" type="submit">
+              
+                
+              
+                
                 LOGIN
+                {
+                  isLoading &&   <ColorRing
+                  visible={true}
+                  height="80"
+                  width="49"
+                  ariaLabel="color-ring-loading"
+                  wrapperStyle={{}}
+                  wrapperClass="color-ring-wrapper"
+                  colors={["#fff", "#fff", "#fff", "#fff", "#fff"]}
+                />
+                }
               </button>
               <span>
                 New User? <Link to={"/register"}>SignUp</Link>

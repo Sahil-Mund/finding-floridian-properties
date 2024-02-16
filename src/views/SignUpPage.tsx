@@ -20,6 +20,7 @@ const SignUp: React.FC = () => {
     passwordConfirmation: "",
   });
 
+
   const navigate = useNavigate();
 
 
@@ -34,15 +35,16 @@ const SignUp: React.FC = () => {
     //TODO: Add your form submission logic here
     // console.log("Form submitted:", formData);
     try {
+
       const data = await user_singup({ ...formData, role: "USER" });
 
       console.log("data", data);
       if (data.STATUS && data.STATUS === "SUCCESS") {
         toast.success("Registered successfully, continue to Login");
         resetForm();
+      
         return;
       }
-
       const errorObj = data.response.data.DATA;
       if (Array.isArray(errorObj)) {
         toast.error(errorObj[0].message);
@@ -62,6 +64,8 @@ const SignUp: React.FC = () => {
       navigate("/");
     }
   }, [navigate]);
+
+  
 
   return (
     <section className="user-registration">
@@ -113,7 +117,7 @@ const SignUp: React.FC = () => {
                 Signup
               </button>
               <span>
-                Existing User? <Link to={"/"}>LogIn</Link>
+                Existing User? <Link to={"/login"}>LogIn</Link>
               </span>
             </div>
           </form>

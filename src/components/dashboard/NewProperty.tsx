@@ -9,6 +9,7 @@ import Video from "components/home/Video";
 import { FormMethod, Link, useLocation, useNavigate } from "react-router-dom";
 import { add_property, uploadSingleImageToAWS } from "backend";
 import { toast } from "react-toastify";
+import { ColorRing } from "react-loader-spinner";
 
 interface NewPropertyProps {
   // Add your component's props here
@@ -239,6 +240,7 @@ const NewProperty: React.FC<NewPropertyProps> = (props) => {
   const [selectedCoverImage, setSelectedCoverImage] = useState<string | null>(
     null
   );
+  const [loader, setLoader] = useState(false);
 
   const [validationError, setValidationError] = useState<string>("");
   const formRef = useRef(null);
@@ -343,19 +345,22 @@ const NewProperty: React.FC<NewPropertyProps> = (props) => {
   const handleSubmit = async (event: any) => {
     event.preventDefault();
     //check validations here
-
+    setLoader(true);
     const ratingLen = Object.keys(formData.rating).length || 0;
-    console.log(ratingLen);
+    // console.log(ratingLen);
 
     if (ratingLen !== 6) {
       setValidationError("Make sure to rate your properties");
       toast.error(validationError);
+      setLoader(false);
+
       return;
     }
 
     if (isValidPrice(formData.price)) {
       setValidationError("Invalid Price");
       toast.error("Invalid Price");
+      setLoader(false);
       return;
     }
 
@@ -367,18 +372,20 @@ const NewProperty: React.FC<NewPropertyProps> = (props) => {
     if (!hasAmenities) {
       setValidationError("Choose at least one Amenities");
       toast.error("Choose at least one Amenities");
+      setLoader(false);
+      return;
+    }
+    if (!formData.banner_img) {
+      setValidationError("Upload a cover image for your property");
+      toast.error("Upload a cover image for your property");
+      setLoader(false);
       return;
     }
 
     if (!formData.acknowledgement) {
       setValidationError("Agree on terms to continue");
       toast.error("Agree on terms to continue");
-      return;
-    }
-
-    if (!formData.banner_img) {
-      setValidationError("Enter a cover image for your property");
-      toast.error("Enter a cover image for your property");
+      setLoader(false);
       return;
     }
 
@@ -407,9 +414,11 @@ const NewProperty: React.FC<NewPropertyProps> = (props) => {
       if (response.STATUS === "SUCCESS") {
         toast.success(response.MESSAGE || "Product Added Successfully");
       }
+      setLoader(false);
     } catch (error: any) {
       console.log(error);
       toast.error(error.response.data.message);
+      setLoader(false);
     }
 
     // window.location.reload();
@@ -530,7 +539,10 @@ const NewProperty: React.FC<NewPropertyProps> = (props) => {
           <button>+ Sell a property</button>
         </div>
       </div> */}
-      <span className="backbutton" style={{ textDecoration: "none", visibility:'hidden' }}>
+      <span
+        className="backbutton"
+        style={{ textDecoration: "none", visibility: "hidden" }}
+      >
         <img
           src="https://s3.ap-south-1.amazonaws.com/cdn.ghc.health/2f72bef8-773f-4c15-8692-6e46798ffea3.png"
           alt="back_icon"
@@ -709,7 +721,7 @@ const NewProperty: React.FC<NewPropertyProps> = (props) => {
           </div>
 
           <div className="check-box">
-            <label>Type of {serviceType === 'rent' ? 'Rental' : 'Sell'}</label>
+            <label>Type of {serviceType === "rent" ? "Rental" : "Sell"}</label>
             <div className="check-option">
               {(serviceType === "rent"
                 ? rental_property_type
@@ -1045,7 +1057,20 @@ const NewProperty: React.FC<NewPropertyProps> = (props) => {
 
           <div className="submit-button">
             <button>Preview</button>
-            <button type="submit">Add Property</button>
+            <button type="submit">
+              Add Property
+              {loader && (
+                <ColorRing
+                  visible={true}
+                  height="80"
+                  width="49"
+                  ariaLabel="color-ring-loading"
+                  wrapperStyle={{}}
+                  wrapperClass="color-ring-wrapper"
+                  colors={["#fff", "#fff", "#fff", "#fff", "#fff"]}
+                />
+              )}
+            </button>
           </div>
         </form>
       </div>
