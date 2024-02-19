@@ -43,6 +43,7 @@ const LogIn: React.FC<LogInProps> = (props) => {
 
       if (data?.response?.data && data?.response?.data?.STATUS === "FAILURE") {
         toast.error(data.response.data.MESSAGE as string);
+        setIsLoading(false);
         return;
       }
 

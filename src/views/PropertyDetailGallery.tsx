@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 
 import {
   LoveIcon,
@@ -11,7 +11,7 @@ import {
 } from "../assets/svg";
 
 import "../styles/property-gallery.scss";
-import { rentalApartmanetDetails } from "../assets/constansts";
+// import { rentalApartmanetDetails } from "../assets/constansts";
 
 interface PropertyDetailGalleryProps {
   // Add your component's props here
@@ -19,11 +19,20 @@ interface PropertyDetailGalleryProps {
 
 const PropertyDetailGallery: React.FC<PropertyDetailGalleryProps> = (props) => {
   //TODO: USE LOGIC TO CHECK WHETHER THE GALLERY WILL BE OF RENT/SELL
-  const images = rentalApartmanetDetails.gallery;
+  // const images = rentalApartmanetDetails.gallery;
   const [currentFirstImageIdx, setCurrentFirstImageIdx] = useState<number>(0);
   const [mobileImgIdx, setMobileImgIdx] = useState<number>(0);
   const [currentSecondImageIdx, setCurrentSecondImageIdx] = useState<number>(1);
   const navigate = useNavigate();
+
+  const location = useLocation();
+  const [images, setImages] = useState([]);
+  const [title, setTitle] = useState("");
+
+  useEffect(() => {
+    setImages(location?.state?.gallery || []);
+    setTitle(location?.state?.subtitle);
+  }, [location]);
 
   const handlePrevClick = () => {
     if (currentFirstImageIdx === 0 || currentSecondImageIdx === 1) return;
@@ -57,7 +66,7 @@ const PropertyDetailGallery: React.FC<PropertyDetailGalleryProps> = (props) => {
         <div className="btns">
           <PropertyDetailsBackIcon onClick={() => navigate(-1)} />
           <span className="image-index">
-            {currentFirstImageIdx + 1}/{images.length}
+            {currentSecondImageIdx + 1}/{images.length}
           </span>
           <div className="icons">
             <ShareIcon />
@@ -74,7 +83,7 @@ const PropertyDetailGallery: React.FC<PropertyDetailGalleryProps> = (props) => {
           <NextIcon onClick={handleNextClick} />
         </div>
         <div className="property-title">
-          <p>Fridai Apartment</p>
+          <p>{title}</p>
         </div>
       </section>
 
@@ -91,18 +100,16 @@ const PropertyDetailGallery: React.FC<PropertyDetailGalleryProps> = (props) => {
           {mobileImgIdx + 1}/{images.length}
         </div>
         <div className="image-container">
-          
           <div className="images">
             <img src={images[mobileImgIdx]} alt="" />
           </div>
         </div>
         <div className="navigations">
-        <PrevIcon onClick={handleMobilePrevClick} />
-        <NextIcon onClick={handleMobileNextClick} />
-
+          <PrevIcon onClick={handleMobilePrevClick} />
+          <NextIcon onClick={handleMobileNextClick} />
         </div>
         <div className="property-title">
-          <p>Fridai Apartment</p>
+        <p>{title}</p>
         </div>
       </section>
     </>

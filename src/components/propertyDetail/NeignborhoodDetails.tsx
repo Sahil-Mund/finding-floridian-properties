@@ -1,5 +1,6 @@
 import React from "react";
 import { ShareIcon, StraightLine } from "../../assets/svg";
+import { generateGoogleMapsUrl } from "common/helper";
 
 interface NeignborhoodDetailsProps {
   // Add your component's props here
@@ -7,42 +8,62 @@ interface NeignborhoodDetailsProps {
 }
 
 const NeignborhoodDetails: React.FC<NeignborhoodDetailsProps> = ({ data }) => {
-  const leftGradeVarities = [
-    "Safety",
-    "Cultural Diversity",
-    "Education & Schools",
-  ];
-  const rightGradeVarities = [
-    "Convenience",
-    "Healthcare Facilities",
-    "Scenic Views",
-  ];
+  const neighborhood: any = {
+    property_title: data.title,
+    desc: "is situated in a thriving community that offers safety, convenience, and a vibrant atmosphere.",
+    grade: "A",
+    left: {
+      Housing: "B-",
+      "Health & Fitness": "A-",
+      Commute: "A-",
+      "Cost of Living": "B-",
+      "Outdoor Activities": "A-",
+      "Good for Families": "B+",
+    },
+    right: {
+      "Crime & Safety": "C",
+      Nightlife: "A",
+      Diversity: "A",
+      Weather: "A",
+      Jobs: "B",
+      "Public Schools": "B",
+    },
+
+    // location_url:
+    //   "https://www.google.com/maps?ll=27.826383,-82.697457&z=11&t=m&hl=en&gl=IN&mapclient=embed&q=St.+Petersburg,+FL+33701+USA",
+    iframe_src:
+      "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d112910.59273912094!2d-82.7798593421373!3d27.826510408264312!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x88c2e19ba9c0be39%3A0x8ae47e3adb68d30a!2sSt.%20Petersburg%2C%20FL%2033701%2C%20USA!5e0!3m2!1sen!2sin!4v1708005058097!5m2!1sen!2sin",
+  };
+
+  // console.log(data);
 
   return (
     <div className="neighborhood-container">
       <div className="grade">
         <div className="top">
           <div className="neighborhood-grade">
-            <span className="grade-btn">{data.grade}</span>
+            <span className="grade-btn">{neighborhood.grade}</span>
             <span className="title">Neighborhood Grade</span>
           </div>
-          <p>{data.desc}</p>
+          <p>
+            {data.subtitle}&nbsp;{neighborhood.desc}
+          </p>
         </div>
         <div className="bottom">
           <div className="left">
-            {leftGradeVarities.map((ele, index) => (
-              <div key={index}>
-                <span className="grade-btn-sm">{data[ele]}</span>
-                <span className="grades-desc">{ele}</span>
+            {Object.entries(neighborhood?.left).map(([key, value]) => (
+              <div key={key}>
+                <span className="grade-btn-sm">{neighborhood?.left[key]}</span>
+                <span className="grades-desc">{key}</span>
               </div>
             ))}
           </div>
           <StraightLine />
           <div className="right">
-            {rightGradeVarities.map((ele, index) => (
-              <div key={index}>
-                <span className="grade-btn-sm">{data.grade}</span>
-                <span className="grades-desc">{ele}</span>
+            {Object.entries(neighborhood.right).map(([key, value]) => (
+              <div key={key}>
+                <span className="grade-btn-sm">{neighborhood?.right[key]}</span>
+                <span className="grades-desc">{key}</span>
               </div>
             ))}
           </div>
@@ -50,7 +71,7 @@ const NeignborhoodDetails: React.FC<NeignborhoodDetailsProps> = ({ data }) => {
       </div>
       <div className="map">
         <iframe
-          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3341.5800729688153!2d-96.75535168498972!3d33.12012208086974!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x864c3d7f68ed6cbd%3A0x9fb6054db03ff47b!2s14300%20TX-121%2C%20Frisco%2C%20TX%2075035%2C%20USA!5e0!3m2!1sen!2sin!4v1670597861892!5m2!1sen!2sin"
+          src={neighborhood.iframe_src}
           width="600"
           height="450"
           loading="lazy"
@@ -60,7 +81,7 @@ const NeignborhoodDetails: React.FC<NeignborhoodDetailsProps> = ({ data }) => {
 
         <div>
           <a
-            href="https://www.google.com/maps/place/14300+State+Hwy+121,+Frisco,+TX+75035,+USA/@33.120122,-96.753163,16z/data=!4m6!3m5!1s0x864c3d7f68ed6cbd:0x9fb6054db03ff47b!8m2!3d33.1201221!4d-96.753163!16s%2Fg%2F11gfp907wz?hl=en&entry=ttu"
+            href={generateGoogleMapsUrl(data.state)}
             target="_blank"
             rel="noopener noreferrer"
           >

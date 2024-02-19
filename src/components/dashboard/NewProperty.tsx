@@ -29,6 +29,8 @@ const initialFormState = {
   num_of_bedroom: 0,
   num_of_bathroom: 0,
   property_located_at: "",
+  // square_feet: "",
+  // extended_description: "",
   amenities: {
     newconstruction: false,
     gym: false,
@@ -281,8 +283,11 @@ const NewProperty: React.FC<NewPropertyProps> = (props) => {
     setGalleryImgFiles(newArray);
   };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, checked, value } = e.target;
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    const { name, value } = e.target;
+    const { checked } = (e as React.ChangeEvent<HTMLInputElement>).target;
 
     if (name === "acknowledgement") {
       setFormData({
@@ -351,7 +356,7 @@ const NewProperty: React.FC<NewPropertyProps> = (props) => {
 
     if (ratingLen !== 6) {
       setValidationError("Make sure to rate your properties");
-      toast.error(validationError);
+      toast.error("Make sure to rate your properties");
       setLoader(false);
 
       return;
@@ -408,7 +413,7 @@ const NewProperty: React.FC<NewPropertyProps> = (props) => {
         gallery_images_urls,
         home_tour_video: home_tour_video?.data.data || "",
       });
-      resetForm();
+      // resetForm();
       // console.log(response);
 
       if (response.STATUS === "SUCCESS") {
@@ -691,6 +696,17 @@ const NewProperty: React.FC<NewPropertyProps> = (props) => {
                     required
                   />
                 </div>
+                {/* <div className="grid">
+                  <label>Area (Sq.Ft)</label>
+                  <input
+                    type="text"
+                    name="square_feet"
+                    value={formData.square_feet}
+                    // placeholder="Alexandria, Virginia"
+                    onChange={handleChange}
+                    required
+                  />
+                </div> */}
               </div>
               {serviceType === "sell" && (
                 <div className="grid">
@@ -707,7 +723,7 @@ const NewProperty: React.FC<NewPropertyProps> = (props) => {
               )}
 
               <div className="grid">
-                <label>Description</label>
+                <label>Short Description</label>
                 <input
                   type="text"
                   name="description"
@@ -717,6 +733,16 @@ const NewProperty: React.FC<NewPropertyProps> = (props) => {
                   onChange={handleChange}
                 />
               </div>
+              {/* <div className="grid">
+                <label>Extended Description</label>
+                <textarea
+                  name="extended_description"
+                  placeholder="Enter Full description"
+                  required
+                  value={formData.extended_description}
+                  onChange={handleChange}
+                ></textarea>
+              </div> */}
             </div>
           </div>
 

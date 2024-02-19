@@ -3,17 +3,19 @@ export const logoURL =
 export const profilePic =
   "https://s3.ap-south-1.amazonaws.com/cdn.ghc.health/717d639b-8d5c-479a-961f-052d91f8624e.png";
 
+export const ADMIN_MAIL_ID = `mailto:carter@findingfloridians.com`;
+
 export const navigationURLs = [
   {
     displayName: " ",
     url: "/",
     type: "",
   },
-  // {
-  //   displayName: "Rent",
-  //   url: "/questionnaire/qna?type=rent&step=2",
-  //   type: "same_page",
-  // },
+  {
+    displayName: "Properties",
+    url: "/properties",
+    type: "",
+  },
   // {
   //   displayName: "Buy",
   //   url: "/questionnaire/qna?type=buy&step=2",

@@ -33,20 +33,52 @@ import SignUp from "views/SignUpPage";
 import { useAuth } from "hooks/useAuth";
 import ProtectedRoute from "views/ProtectedRoute";
 import UserListingTermsAndConditions from "views/UserListingTermsAndConditions";
+import { getAllProperties } from "backend/hasura-api";
+import { postCardDetails } from "assets/data";
+import { useProperty } from "hooks/useProperties";
 
 function App() {
   const { isLoggedIn, setIsLoggedIn, setUserData, token } = useAuth();
+  const { properties, updateProperties } = useProperty();
 
   useEffect(() => {
-    async function fetchUser() {
-      const data = await get_loggedIn_user();
-      setUserData(data.DATA?.user);
-      setIsLoggedIn(data.DATA.user ? true : false);
-    }
 
-    if (token) {
-      fetchUser();
+    async function fetchData() {
+      // Fetch all properties
+      try {
+        const properties = await getAllProperties();
+        updateProperties(properties);
+      } catch (error) {
+        console.error('Failed to fetch properties:', error);
+      }
+  
+      // Fetch user data if token exists
+      if (token) {
+        try {
+          const data = await get_loggedIn_user();
+          setUserData(data.DATA?.user);
+          setIsLoggedIn(data.DATA.user ? true : false);
+        } catch (error) {
+          console.error('Failed to fetch user data:', error);
+        }
+      }
     }
+  
+    fetchData();
+
+
+    // const properties = getAllProperties();
+    // updateProperties(properties);
+
+    // async function fetchUser() {
+    //   const data = await get_loggedIn_user();
+    //   setUserData(data.DATA?.user);
+    //   setIsLoggedIn(data.DATA.user ? true : false);
+    // }
+
+    // if (token) {
+    //   fetchUser();
+    // }
   }, []);
   return (
     <div className="App">
@@ -79,8 +111,17 @@ function App() {
             }
           />
           <Route
+            path="/properties"
+            element={<RecommendationPostCard data={properties} />}
+          />
+          <Route
             path="/user-listing-tnc"
             element={<UserListingTermsAndConditions />}
+          />
+           <Route path="/property-details" element={<PropertyDetail />} />
+          <Route
+            path="/property-details/gallery"
+            element={<PropertyDetailGallery />}
           />
 
           {/* {isLoggedIn ? (

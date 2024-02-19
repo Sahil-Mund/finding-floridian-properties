@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import ButtonModal from "./buttonModal";
 
 import {
@@ -11,7 +11,7 @@ import {
   NextArrowIcon,
   UnlockIcon,
 } from "../../assets/svg";
-import {  useUserModal } from "../../hooks/useUserModal";
+import { useUserModal } from "../../hooks/useUserModal";
 
 interface RecommendationPostCardProps {
   // Add your component's props here
@@ -21,48 +21,64 @@ interface RecommendationPostCardProps {
 const RecommendationPostCard: React.FC<RecommendationPostCardProps> = ({
   data,
 }) => {
-  const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
+  // const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
   const [unLock, setUnLock] = useState<boolean>(false);
-  const [ispremiumUser, setIspremiumUser] = useState<boolean>(false);
+  const [ispremiumUser, setIspremiumUser] = useState<boolean>(true);
+  const navigate = useNavigate();
 
   const { onOpen } = useUserModal();
+
+
+  console.log('DATA',data);
+  
 
   const handleUnlock = async () => {
     setUnLock(true);
     setTimeout(() => {
       setIspremiumUser(false);
       onOpen();
+      // alert('Get in touch with your home girl to know more')
+      // navigate('/contact-us')
       setUnLock(false); // TODO:  will remove this later
     }, 3000);
+  };
 
-     
-  };
-  const handleModal = (
-    e: React.MouseEvent<HTMLSpanElement | HTMLDivElement>,
-    isVisibe: boolean
-  ) => {
-    setIsModalVisible(isVisibe);
-    e.stopPropagation();
-  };
+
+  // useEffect(() => {
+  //   const is_Submitted = JSON.parse(
+  //     localStorage.getItem("IS_CONTACT_FORM_SUBMITTED") as string
+  //   );
+
+  //   console.log(is_Submitted);
+    
+  //   if (is_Submitted) {
+  //     setIspremiumUser(true);
+  //   }
+  //   // localStorage.setItem("IS_CONTACT_FORM_SUBMITTED", JSON.stringify(true));
+  // },[]);
 
   return (
     <section className="recommendation-post-section">
-      <div className="container-box" onClick={(e) => handleModal(e, false)}>
-        <h2>Here are the top picks from your Home Girl.</h2>
-        <h1>Magnolia Heights, St Petersburg, Florida</h1>
+      <div className="container-box" >
+      <h2>Here are the top picks from your Home Girl.</h2>
+        <h1>DOWNTOWN, ST PETERSBURG, FLORIDA</h1>
         <p>
           Our advanced AI has analyzed your preferences and handpicked three
           exceptional properties that offer a unique blend of features that
           match your ideal Florida lifestyle.
         </p>
-     
-
         <div className="post-items">
           {data?.map((ele, index) => (
             <div className="post-item" key={index}>
               <div className="item-image">
-                <img src={ele.image} alt={ele.title} />
-                <Link to={ele.url}>
+                <img src={ele.banner_img_url} alt={ele.title} />
+                <Link to={`/property-details?title=${ele.title}`} 
+                // style={{
+                //   pointerEvents : ispremiumUser || index === 0 ? 'auto' : 'none',
+                //   cursor: ispremiumUser || index === 0 ? 'pointer' : 'not-allowed'
+                  
+                // }}
+                >
                   {" "}
                   <span> View Details </span>
                   <NextArrowIcon />
@@ -71,27 +87,34 @@ const RecommendationPostCard: React.FC<RecommendationPostCardProps> = ({
 
               {ispremiumUser || index === 0 ? (
                 <div className="item-content">
-                  <h2 className="item-price">{ele.price}</h2>
+                  <h2 className="item-price">
+                    <span>$</span>&nbsp;{ele.price}
+                    {
+                      ele.service_type === "rent" && <span style={{
+                        fontSize:'15px'
+                        
+                      }}>/per Month</span>
+                    }
+                  </h2>
                   <h2 className="item-title">{ele.title}</h2>
 
                   <div className="item-amenities">
                     <div className="amenity amenity-1">
                       <BedRoomSmIcon />
-
-                      {ele.amenitie1}
+                      {ele.num_of_bedrooms} Bedroom
                     </div>
                     <div className="amenity amenity-2">
                       <BathSmIcon />
-
-                      {ele.amenitie2}
+                      {ele.num_of_bathrooms} Bathroom
                     </div>
                     <div className="amenity amenity-3">
                       <HomeSmIcon />
-                      {ele.amenitie3}
+                      11,340 Sq.Ft
+                      {/* {ele.area} Sq.Ft */}
                     </div>
                     <div className="amenity amenity-4">
                       <LocationSmIcon />
-                      {ele.amenitie4}
+                      {ele.state}
                     </div>
                   </div>
                 </div>
@@ -114,7 +137,10 @@ const RecommendationPostCard: React.FC<RecommendationPostCardProps> = ({
                     )}
                   </div>
                   <div className="item-content dummy-content">
-                    <h2 className="item-price">$4,600</h2>
+                    <h2 className="item-price">$4,600   <span style={{
+                      fontSize:'20px'
+                      
+                    }}>/per Month</span></h2>
                     <h2 className="item-title">Magnolia Heights</h2>
 
                     <div className="item-amenities">
@@ -140,21 +166,21 @@ const RecommendationPostCard: React.FC<RecommendationPostCardProps> = ({
           ))}
         </div>
 
-        <div className="bottom-section">
+        {/* <div className="bottom-section">
           <Link to={"/contact-us"}>
             <button>Talk with your Home Girl</button>
           </Link>
           <p onClick={(e) => handleModal(e, true)}>
             Not happy with the results?
           </p>
-        </div>
+        </div> */}
       </div>
-      <div
+      {/* <div
         className="Modal"
         style={{ display: isModalVisible ? "block" : "none" }}
       >
         <ButtonModal />
-      </div>
+      </div> */}
     </section>
   );
 };

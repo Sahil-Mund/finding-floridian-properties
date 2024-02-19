@@ -10,6 +10,7 @@ export { ReactComponent as ShareIcon } from "./property/share.svg";
 export { ReactComponent as GalleryIcon } from "./property/gallery.svg";
 export { ReactComponent as PropertyDetailsBackIcon } from "./property/property-details-back.svg";
 export { ReactComponent as VideoIcon } from "./property/video.svg";
+export { ReactComponent as GreenTickIcon } from "./property/greentick.svg";
 
 export { ReactComponent as Share2Icon } from "./property-gallery/share2.svg";
 export { ReactComponent as LoveIcon } from "./property-gallery/love.svg";
