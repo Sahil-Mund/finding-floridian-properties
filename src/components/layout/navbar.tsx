@@ -56,7 +56,9 @@ const Navbar = () => {
   return (
     <div className={`header ${mobileMenuOpen ? "mobile-menu-open" : ""}`}>
       <div className="logo">
-        <img src={logoURL} alt="logo-img" />
+       <Link to={'/'}>
+       <img src={logoURL} alt="logo-img" />
+       </Link>
       </div>
       {isMobile && (
         <div className="mobile-menu-toggle" onClick={handleMobileMenuToggle}>
@@ -93,9 +95,9 @@ const Navbar = () => {
 
             {userData && isLoggedIn && (
              <>
-              <li>
+              {/* <li>
                 Hi {userData.name}
-              </li>
+              </li> */}
               <li className="pointer" onClick={handleLogout}>
               LogOut
               </li>

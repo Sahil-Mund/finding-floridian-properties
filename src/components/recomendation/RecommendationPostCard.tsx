@@ -12,6 +12,7 @@ import {
   UnlockIcon,
 } from "../../assets/svg";
 import { useUserModal } from "../../hooks/useUserModal";
+import { RotatingLines } from "react-loader-spinner";
 
 interface RecommendationPostCardProps {
   // Add your component's props here
@@ -44,6 +45,16 @@ const RecommendationPostCard: React.FC<RecommendationPostCardProps> = ({
   };
 
 
+  if(!data){
+    return <div className="loader-svg"><RotatingLines
+    visible={true}
+    width="96"
+    strokeWidth="5"
+    animationDuration="0.75"
+    ariaLabel="rotating-lines-loading"
+    /></div>
+  }
+
   // useEffect(() => {
   //   const is_Submitted = JSON.parse(
   //     localStorage.getItem("IS_CONTACT_FORM_SUBMITTED") as string
@@ -60,13 +71,13 @@ const RecommendationPostCard: React.FC<RecommendationPostCardProps> = ({
   return (
     <section className="recommendation-post-section">
       <div className="container-box" >
-      <h2>Here are the top picks from your Home Girl.</h2>
-        <h1>DOWNTOWN, ST PETERSBURG, FLORIDA</h1>
-        <p>
+      <h2>Here are the listed properties</h2>
+        {/* <h1>DOWNTOWN, ST PETERSBURG, FLORIDA</h1> */}
+        {/* <p>
           Our advanced AI has analyzed your preferences and handpicked three
           exceptional properties that offer a unique blend of features that
           match your ideal Florida lifestyle.
-        </p>
+        </p> */}
         <div className="post-items">
           {data?.map((ele, index) => (
             <div className="post-item" key={index}>

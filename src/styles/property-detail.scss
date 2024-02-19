@@ -833,6 +833,22 @@
       }
     }
 
+    .rating-box {
+      ul {
+        width: 100%;
+
+        li {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          width: 100%;
+
+          .stars {
+            display: flex;
+          }
+        }
+      }
+    }
     .gallery-container {
       .gallery-title {
         color: $dark-green-color;

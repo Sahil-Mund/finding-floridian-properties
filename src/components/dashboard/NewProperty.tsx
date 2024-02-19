@@ -355,8 +355,8 @@ const NewProperty: React.FC<NewPropertyProps> = (props) => {
     // console.log(ratingLen);
 
     if (ratingLen !== 6) {
-      setValidationError("Make sure to rate your properties");
-      toast.error("Make sure to rate your properties");
+      setValidationError("Make sure to rate your property");
+      toast.error("Make sure to rate your property");
       setLoader(false);
 
       return;
@@ -413,7 +413,7 @@ const NewProperty: React.FC<NewPropertyProps> = (props) => {
         gallery_images_urls,
         home_tour_video: home_tour_video?.data.data || "",
       });
-      // resetForm();
+      resetForm();
       // console.log(response);
 
       if (response.STATUS === "SUCCESS") {

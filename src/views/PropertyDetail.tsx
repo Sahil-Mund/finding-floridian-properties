@@ -16,6 +16,7 @@ import "../styles/property-detail.scss";
 import { useUserModal } from "../hooks/useUserModal";
 import { useProperty } from "hooks/useProperties";
 import { getPropertyByTitle } from "backend/hasura-api";
+import { RotatingLines } from "react-loader-spinner";
 
 interface PropertyDetailProps {
   // Add your component's props here
@@ -78,7 +79,13 @@ const PropertyDetail: React.FC<PropertyDetailProps> = (props) => {
   };
 
   if(loading){
-    return <>Loading...</>
+    return <div className="loader-svg"><RotatingLines
+    visible={true}
+    width="96"
+    strokeWidth="5"
+    animationDuration="0.75"
+    ariaLabel="rotating-lines-loading"
+    /></div>
   }
 
   return (
